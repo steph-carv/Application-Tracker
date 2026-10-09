@@ -46,3 +46,15 @@ class StageChange(SQLModel, table=True):
     stage: Stage
     notes: Optional[str] = None
     changed_at: datetime = Field(default_factory= lambda: datetime.now(timezone.utc))
+
+class SeasonCreate(SQLModel):
+    name: str
+    user_id: int
+
+class SeasonUpdate(SQLModel):
+    name: Optional[str] = None
+
+class SeasonRead(SQLModel):
+    id: int
+    name: str
+    user_id: int
