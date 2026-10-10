@@ -1,5 +1,6 @@
 from datetime import date, datetime, timezone
 from enum import Enum
+from pydantic import EmailStr
 from sqlmodel import SQLModel, Field
 from typing import Optional
 
@@ -16,6 +17,10 @@ class Stage(str, Enum):
     rejected = "Rejected"
     withdrawn = "Withdrawn"
     declined = "Declined"
+
+class Token(SQLModel):
+    access_token: str
+    token_type: str
 
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -98,3 +103,13 @@ class StageChangeRead(SQLModel):
     stage: Stage
     notes: Optional[str] = None
     changed_at: datetime
+
+class UserCreate(SQLModel):
+    email: EmailStr
+    password: str
+
+class UserRead(SQLModel):
+    id: int
+    email: EmailStr
+    created_at: datetime
+
