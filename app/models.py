@@ -58,3 +58,43 @@ class SeasonRead(SQLModel):
     id: int
     name: str
     user_id: int
+
+class ApplicationCreate(SQLModel):
+    season_id: int
+    company: str
+    position: str
+    stage: Stage = Stage.to_apply
+    opening_date: Optional[date] = None
+    deadline: Optional[date] = None
+    notes: Optional[str] = None
+    contact: Optional[str] = None
+
+class ApplicationUpdate(SQLModel):
+    company: Optional[str] = None
+    position: Optional[str] = None
+    opening_date: Optional[date] = None
+    deadline: Optional[date] = None
+    notes: Optional[str] = None
+    contact: Optional[str] = None
+
+class ApplicationRead(SQLModel):
+    id: int
+    season_id: int
+    company: str
+    position: str
+    current_stage: Stage
+    opening_date: Optional[date] = None
+    deadline: Optional[date] = None
+    notes: Optional[str] = None
+    contact: Optional[str] = None
+
+class StageChangeCreate(SQLModel):
+    stage: Stage
+    notes: Optional[str] = None
+
+class StageChangeRead(SQLModel):
+    id: int
+    application_id: int
+    stage: Stage
+    notes: Optional[str] = None
+    changed_at: datetime
