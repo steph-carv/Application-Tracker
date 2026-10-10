@@ -1,16 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlmodel import Session, select
 from app.database import get_session
 from app.dependencies import get_current_user
-from app.models import Season, SeasonCreate, SeasonRead, SeasonUpdate, User
+from app.models import Season, SeasonCreate, SeasonRead, SeasonUpdate, User 
+from app.services import get_owned_season
 
 router = APIRouter(prefix="/seasons", tags=["seasons"])
-
-def get_owned_season(session: Session, season_id: int, user: User) -> Season:
-    season = session.get(Season, season_id)
-    if not season or season.user_id != user.id: 
-        raise HTTPException(status_code=404, detail="Season not found")
-    return season
 
 @router.post("", response_model=SeasonRead, status_code=201)
 def create_season(data: SeasonCreate, session: Session = Depends(get_session), current_user: User = Depends(get_current_user)):
