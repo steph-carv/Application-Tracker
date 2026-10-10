@@ -54,7 +54,6 @@ class StageChange(SQLModel, table=True):
 
 class SeasonCreate(SQLModel):
     name: str
-    user_id: int
 
 class SeasonUpdate(SQLModel):
     name: Optional[str] = None
