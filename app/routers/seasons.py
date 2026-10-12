@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends
+
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from app.database import get_session
 from app.dependencies import get_current_user
-from app.models import Season, SeasonCreate, SeasonRead, SeasonUpdate, User 
+from app.models import Season, SeasonCreate, SeasonRead, SeasonUpdate, User , PasswordConfirm
 from app.services import get_owned_season
+from app.security import verify_password
 
 router = APIRouter(prefix="/seasons", tags=["seasons"])
 
@@ -34,3 +36,13 @@ def update_season(season_id: int, data: SeasonUpdate, session: Session = Depends
     session.commit()
     session.refresh(season)
     return season
+
+
+@router.post("/{season_id}/delete", status_code=204)
+def delete_season(season_id: int, data: PasswordConfirm, session: Session = Depends(get_session), current_user: User = Depends(get_current_user)):
+    season = get_owned_season(session, season_id, current_user)
+    if not verify_password(data.password, current_user.hashed_password):
+        raise HTTPException(status_code=403, detail="Incorrect password")
+    session.delete(season)
+    session.commit()
+

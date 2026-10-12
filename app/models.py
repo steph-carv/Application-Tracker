@@ -112,3 +112,7 @@ class UserRead(SQLModel):
     email: EmailStr
     created_at: datetime
 
+class PasswordConfirm(SQLModel):
+    password: str
+    
+
