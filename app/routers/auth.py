@@ -15,7 +15,7 @@ def signup_user(data: UserCreate, session: Session = Depends(get_session)):
         raise HTTPException(status_code=409, detail="Email already registered")
     
     hashed_password = hash_password(data.password)
-    user = User(email=data.email, hashed_password=hashed_password)
+    user = User(email=data.email.lower(), hashed_password=hashed_password)
     session.add(user)
     session.commit()
     session.refresh(user)

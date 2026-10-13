@@ -28,3 +28,9 @@ def client(session):
     app.dependency_overrides[get_session] = get_test_session
     yield TestClient(app)
     app.dependency_overrides.clear()
+
+def auth_headers(client, email, password="testpass123"):
+    client.post("/auth/signup", json={"email": email, "password": password})
+    response = client.post("/auth/login", data={"username": email, "password": password})
+    token = response.json()["access_token"]
+    return {"Authorization": f"Bearer {token}"}
