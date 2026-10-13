@@ -15,5 +15,5 @@ Future Work:
 1. get recommendations from the app for new places to apply based on past applications
 2.  scrape different job sites so everything is centeralised
 
-Audience: mainly students and grads
+Audience: mainly students and graduates
    
